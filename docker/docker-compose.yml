@@ -153,7 +153,7 @@ services:
       - '--path.rootfs=/rootfs'
 
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc|mnt|tmp)($$|/)'
-
+      - '--collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|9p)$'
       - '--no-collector.netstat'
       - '--no-collector.softnet'
 
