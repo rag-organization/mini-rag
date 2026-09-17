@@ -10,10 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step to pull down the repository code
+      # Take my repository from GitHub and put the code inside the GitHub Actions runner so the following steps can work with it.
       - name: Checkout code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v7.0.1
+      # Connect from the GitHub Actions runner to your server using SSH and execute commands there.
+      # A GitHub Actions runner is a temporary computer (virtual machine) provided by GitHub that executes your workflow.
       - name: Deploy via ssh
-        uses: appleboy/ssh-action@v1.2.2
+        uses: appleboy/ssh-action@v1.2.5
         with:
           host: ${{secrets.SSH_MAIN_HOST_IP}}
           username: github_user
