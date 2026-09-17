@@ -6,3 +6,5 @@ env/.env*
 
 # Ignore Alembic config
 alembic.ini
+
+rag.service
