@@ -70,7 +70,8 @@ async def upload_file(request: Request, project_id: int, file: UploadFile, confi
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={"message": message,
-                "file_id": str(asset_record.asset_id)},
+                "asset_id": str(asset_record.asset_id),
+                "file_id": asset_record.asset_name},
     )
 
 

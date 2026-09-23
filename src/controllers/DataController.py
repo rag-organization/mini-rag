@@ -2,7 +2,7 @@ from .BaseController import BaseController
 from .ProjectController import ProjectController
 from fastapi import UploadFile
 from helpers.config import get_config
-from models import ResponseSignal
+from models import ProcessingEnum, ResponseSignal
 import re
 import os
 
@@ -13,9 +13,13 @@ class DataController(BaseController):
 
     def validatefile(self, file: UploadFile):
         # Implement your file validation logic here
-        if file.content_type not in self.config.FILE_ALLOWED_EXTENSIONS:
+        file_extension = os.path.splitext(file.filename or "")[-1].lower()
+        allowed_extensions = {item.value for item in ProcessingEnum}
+
+        if file.content_type not in self.config.FILE_ALLOWED_EXTENSIONS and file_extension not in allowed_extensions:
             return False, ResponseSignal.FILE_TYPE_NOT_SUPPORTED.value
-        if file.size > self.config.FILE_MAX_SIZE * self.scale_mb:
+
+        if file.size and file.size > self.config.FILE_MAX_SIZE * self.scale_mb:
             return False, ResponseSignal.FILE_SIZE_EXCEEDED.value
 
         return True, ResponseSignal.FILE_VALIDATED_SUCCESSFULLY.value
