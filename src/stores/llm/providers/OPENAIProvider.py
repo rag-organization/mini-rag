@@ -18,7 +18,7 @@ class OPENAIProvider(LLMInterface):
 
         self.client = OpenAI(
             api_key=self.api_key,
-            api_url=self.api_url,
+            # base_url=self.api_url,
         )
 
         self.generation_model_id = None
@@ -42,8 +42,8 @@ class OPENAIProvider(LLMInterface):
         if not self.client:
             self.logger.error("Client is not initialized")
             return None
-        if not self.embedding_model_id:
-            self.logger.error("Embedding model is not set")
+        if not self.generation_model_id:
+            self.logger.error("Generation model is not set")
             return None
 
         max_tokens = max_output_tokens if max_output_tokens else self.default_generation_max_output_tokens
@@ -62,7 +62,7 @@ class OPENAIProvider(LLMInterface):
             self.logger.error("Generation failed")
             return None
 
-        return response.choices[0].message["content"]
+        return response.choices[0].message.content
 
     def embed_text(self, text: Union[str, List[str]], document_type: str=None):
 
