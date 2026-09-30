@@ -111,4 +111,6 @@ class NLPController(BaseController):
         full_prompt = "\n\n".join([document_prompt, footer_template])
         result = self.generation_client.generate_text(prompt=full_prompt,chat_history=chat_history)
 
-        return result, full_prompt, chat_history
+        ## we add retrieved_results to the result
+        contexts = [doc.text for doc in retrieved_results]
+        return result, full_prompt, chat_history, contexts
