@@ -80,12 +80,13 @@ class NLPController(BaseController):
 
         if not results:
             return False
-        
-        return json.loads(
-            json.dumps(
-                results, default=lambda x:x.__dict__
-            )
-        )
+
+        return results
+        # return json.loads(
+        #     json.dumps(
+        #         results, default=lambda x:x.__dict__
+        #     )
+        # )
 
     async def answer_rag_question(self,project:Project, query:str, limit:int=2):
         retrieved_results = await self.search_vectordb_collection(project=project, text=query, limit=limit)
@@ -99,7 +100,7 @@ class NLPController(BaseController):
         document_prompt = "\n".join([
             self.template_parser.get_template("rag", "document_prompt", {
                 "doc_num":id+1,
-                "chunk_text":self.generation_client.process_text(chunk["text"])})
+                "chunk_text":self.generation_client.process_text(chunk.text)})
             for id,chunk in enumerate(retrieved_results)
         ])
 
