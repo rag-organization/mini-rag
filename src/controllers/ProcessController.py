@@ -32,12 +32,15 @@ class ProcessController(BaseController):
             return loader.load(file_path)
         
         return None
+                
 
     def process_file_content(self, file_content:list,file_id: str, chunk_size: int, overlap_size: int):
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=chunk_size,
             chunk_overlap=overlap_size, 
             length_function=len)
+
+        print(f"file content: {file_content}")
 
         chunks = text_splitter.create_documents(
             texts=[doc.page_content for doc in file_content],
