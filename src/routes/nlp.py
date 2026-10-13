@@ -131,7 +131,10 @@ async def search_project(request: Request, project_id: int, search_request:Searc
     results = await nlp_controller.search_vectordb_collection(project=project, text=search_request.text, limit=search_request.limit)
     if not results:
         return JSONResponse(content={"message":ResponseSignal.SEARCH_FAILED.value})
-    return JSONResponse(content={"message":ResponseSignal.SEARCH_SUCCESSFULLY.value,"results":results})
+    return {
+        "message":ResponseSignal.SEARCH_SUCCESSFULLY.value,
+        "results":results
+    }
 
 
 @nlp_router.post("/index/answer/{project_id}")

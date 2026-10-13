@@ -33,4 +33,5 @@ class DataChunk(SQLAlchemyBase):
 class RetrievedDocument(BaseModel):
     text: str 
     score: float
+    chunk_id: int | None = None
     ## then we can add metadata and so on

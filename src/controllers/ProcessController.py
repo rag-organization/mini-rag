@@ -40,7 +40,7 @@ class ProcessController(BaseController):
             chunk_overlap=overlap_size, 
             length_function=len)
 
-        print(f"file content: {file_content}")
+        # print(f"file content: {file_content}")
 
         chunks = text_splitter.create_documents(
             texts=[doc.page_content for doc in file_content],
@@ -53,6 +53,7 @@ class ProcessController(BaseController):
             ],
         )
 
+        # print(f"\n\n\nchunks: {chunks}")
         return chunks
 
     def simple_text_processer(self, texts: List[str], metadata:dict, chunk_size:int, tag_spliter:str = "\n"):

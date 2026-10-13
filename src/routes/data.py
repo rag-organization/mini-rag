@@ -160,7 +160,7 @@ async def process_file(request: Request, project_id: int, process_request: Proce
             )
             for i, chunk in enumerate(chunks)
         ]
-     
+        print(f"file_chunks_recoreds: {[chunk.__dict__ for chunk in file_chunks_recoreds]}")
         inserted_chunks += await chunk_model.insert_many_chunks(file_chunks_recoreds)
         num_files = len(project_file_ids)
 

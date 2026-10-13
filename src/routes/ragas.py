@@ -5,6 +5,8 @@ from fastapi import APIRouter, Request
 from models.ProjectModel import ProjectModel
 from controllers.NLPControllers import NLPController
 from controllers.RagasEvalController import RagasEvalController
+from controllers.RetrievalEvalController import RetrievalEvalController
+from routes.schemas.ragas import RetrievalEvalRequest
 import asyncio
 import logging
 from helpers.config import get_config
@@ -106,4 +108,22 @@ async def evaluate():
     }
     
 
-    
+
+## evaluate retrieval
+@ragas_router.post("/eval/evaluate_retrieval/{project_id}")
+async def evaluate_retrieval(request: Request, project_id: int, eval_request: RetrievalEvalRequest):
+    project_model = await ProjectModel.create_instance(db_client=request.app.db_client)
+    project = await project_model.get_project_or_create_one(project_id=project_id)
+
+    nlp_controller = NLPController(
+        request.app.vector_db_client,
+        request.app.embedding_client,
+        request.app.generation_client,
+        request.app.template_parser,
+    )
+    controller = RetrievalEvalController(nlp_controller=nlp_controller)
+    return await controller.evaluate(
+        project=project,
+        samples=[sample.model_dump() for sample in eval_request.samples],
+        k=eval_request.k,
+    )

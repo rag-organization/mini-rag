@@ -246,8 +246,9 @@ class PGVectorDB(VectorDBInterface):
         async with self.db_client() as session:
             async with session.begin():
                 stmt = sql_text(
-                    f'SELECT {PgVectorTableSchemeEnums.TEXT.value} as text, 1- ({PgVectorTableSchemeEnums.VECTOR.value} <=> :vecoor) as score '
-                    f'FROM {collection_name} lIMIT {limit}'
+                    f'SELECT {PgVectorTableSchemeEnums.CHUNK_ID.value} as chunk_id, '
+                    f'{PgVectorTableSchemeEnums.TEXT.value} as text, 1- ({PgVectorTableSchemeEnums.VECTOR.value} <=> :vecoor) as score '
+                    f'FROM {collection_name} ORDER BY {PgVectorTableSchemeEnums.VECTOR.value} <=> :vecoor LIMIT {limit}'
                 )
 
                 results = await session.execute(stmt, {"vecoor": vector})
@@ -256,6 +257,18 @@ class PGVectorDB(VectorDBInterface):
         return [
             RetrievedDocument(
                 text = r.text,
-                score = r.score)
+                score = r.score,
+                chunk_id = r.chunk_id)
             for r in records
         ]
+
+
+    async def search_by_keyword(self, collection_name:str, query:str, limit:int) -> List[RetrievedDocument]:
+        is_existed = await self.is_collection_existed(collection_name=collection_name)
+        if not is_existed:
+            self.logger.error(f"Can not insert new record to non-existed collection: {collection_name}")
+            return False
+
+        async with self.db_client() as session:
+            async with session.begin():
+                

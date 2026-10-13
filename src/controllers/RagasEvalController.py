@@ -21,6 +21,7 @@ from langchain_core.rate_limiters import InMemoryRateLimiter
 
 from helpers.config import Config
 import json
+from typing import List, Sequence, Iterable
 
 
 class RagasEvalController:
@@ -120,3 +121,17 @@ class RagasEvalController:
 
         return score
 
+    ## evaluate retrieval
+    # Reciprocal Rank (RR)
+    # Reciprocal Rank (RR)
+    def reciprocal_rank(self,relevance: Sequence[int]) -> float:
+        for i, rel in enumerate(relevance, start=1):
+            if rel:
+                return 1.0 / i
+        return 0.0
+    # relevance here is 
+
+    # Mean Reciprocal Rank (MRR)
+    def mean_reciprocal_rank(self, all_relevance: Iterable[Sequence[int]]) -> float:
+        vals = [self.reciprocal_rank(r) for r in all_relevance]
+        return sum(vals) / len(vals) if vals else 0.0
