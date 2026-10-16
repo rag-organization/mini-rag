@@ -128,7 +128,9 @@ async def search_project(request: Request, project_id: int, search_request:Searc
             request.app.template_parser
             )
 
-    results = await nlp_controller.search_vectordb_collection(project=project, text=search_request.text, limit=search_request.limit)
+    # results = await nlp_controller.search_vectordb_collection(project=project, text=search_request.text, limit=search_request.limit)
+    # results = await nlp_controller.search_by_keyword(project=project, text=search_request.text, limit=search_request.limit)
+    results = await nlp_controller.hybrid_search(project=project, text=search_request.text, limit=search_request.limit)
     if not results:
         return JSONResponse(content={"message":ResponseSignal.SEARCH_FAILED.value})
     return {
