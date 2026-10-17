@@ -1,5 +1,5 @@
 from ..VectorDBInterface import VectorDBInterface
-from ..VectorDBEnum import VectorDBEnum, PgVectorIndexingTypeEnums, DistanceMethodEnum,PgVectorDistanceMethodEnums, PgVectorTableSchemeEnums
+from ..VectorDBEnum import VectorDBEnum, PgVectorIndexingTypeEnums, DistanceMethodEnum,PgVectorDistanceMethodEnums, PgVectorTableSchemeEnums, PgvectorTextSearchConfigEnums
 from models.db_schemes import RetrievedDocument
 import logging
 from typing import List
@@ -19,6 +19,7 @@ class PGVectorDB(VectorDBInterface):
 
         self.pgvector_table_prefix = PgVectorTableSchemeEnums._PREFIX.value
         self.default_index_name = lambda collection_name: f"{collection_name}_vector_index"
+        self.text_search_config_name = PgvectorTextSearchConfigEnums.ENGLISH.value
         self.logger = logging.getLogger("uvicorn")
 
     async def connect(self):
@@ -97,6 +98,7 @@ class PGVectorDB(VectorDBInterface):
         if not is_existed:
             async with self.db_client() as session:
                 async with session.begin():
+                    # 1 - create collection table
                     self.logger.info(f"Creating collection: {collection_name}")
                     stmt = sql_text(
                     f'create table {collection_name} ('
@@ -106,10 +108,26 @@ class PGVectorDB(VectorDBInterface):
                         f'{PgVectorTableSchemeEnums.METADATA.value} jsonb default \'{{}}\',' ## !!!!!!!
                         f'{PgVectorTableSchemeEnums._PREFIX.value} text,'
                         f'{PgVectorTableSchemeEnums.CHUNK_ID.value} integer,'
+                        f"{PgVectorTableSchemeEnums.TSV.value} TSVECTOR GENERATED ALWAYS AS (to_tsvector('english'::regconfig, {PgVectorTableSchemeEnums.TEXT.value})) STORED,"
                         f'foreign key ({PgVectorTableSchemeEnums.CHUNK_ID.value}) references chunks(data_chunk_id)'
                         ')'
                     )
                     await session.execute(stmt)
+
+                    # 2 - create GIN index for full-text search
+                    gin_index_name = f"idx_{collection_name}_tsv"
+
+                    gin_stmt = sql_text(f"""
+                        CREATE INDEX IF NOT EXISTS "{gin_index_name}"
+                        ON "{collection_name}"
+                        USING GIN ({PgVectorTableSchemeEnums.TSV.value})
+                    """)
+
+                    await session.execute(gin_stmt)
+
+                    self.logger.info(
+                        f"Created GIN index for collection: {collection_name}"
+                    )
             return True
         return False
 
@@ -199,8 +217,8 @@ class PGVectorDB(VectorDBInterface):
         
         is_existed = await self.is_collection_existed(collection_name=collection_name)
         if not is_existed:
-            self.logger.error(f"Can not insert new record to non-existed collection: {collection_name}")
-            return False
+            # self.logger.error(f"Can not insert new record to non-existed collection: {collection_name}")
+            raise ValueError(f"Can not insert new record to non-existed collection: {collection_name}")
 
         if len (vectors) != len (record_ids):
             self.logger.error(f"Can not insert new record without chunk_id: {collection_name}")
@@ -238,16 +256,19 @@ class PGVectorDB(VectorDBInterface):
     async def search_by_vector(self, collection_name: str, vector: list, limit: int) -> List[RetrievedDocument]:
         is_existed = await self.is_collection_existed(collection_name=collection_name)
         if not is_existed:
-            self.logger.error(f"Can not insert new record to non-existed collection: {collection_name}")
-            return False
+            # self.logger.error(f"Can not insert new record to non-existed collection: {collection_name}")
+            # return False
+            raise ValueError(f"Can not insert new record to non-existed collection: {collection_name}")
+
 
         vector = "["+",".join([ str(v) for v in vector ])+"]"
 
         async with self.db_client() as session:
             async with session.begin():
                 stmt = sql_text(
-                    f'SELECT {PgVectorTableSchemeEnums.TEXT.value} as text, 1- ({PgVectorTableSchemeEnums.VECTOR.value} <=> :vecoor) as score '
-                    f'FROM {collection_name} lIMIT {limit}'
+                    f'SELECT {PgVectorTableSchemeEnums.CHUNK_ID.value} as chunk_id, '
+                    f'{PgVectorTableSchemeEnums.TEXT.value} as text, 1- ({PgVectorTableSchemeEnums.VECTOR.value} <=> :vecoor) as score '
+                    f'FROM {collection_name} ORDER BY {PgVectorTableSchemeEnums.VECTOR.value} <=> :vecoor LIMIT {limit}'
                 )
 
                 results = await session.execute(stmt, {"vecoor": vector})
@@ -256,6 +277,44 @@ class PGVectorDB(VectorDBInterface):
         return [
             RetrievedDocument(
                 text = r.text,
-                score = r.score)
+                score = r.score,
+                chunk_id = r.chunk_id)
             for r in records
         ]
+
+
+    async def search_by_keyword(self, collection_name:str, query:str, limit:int) -> List[RetrievedDocument]:
+        is_existed = await self.is_collection_existed(collection_name=collection_name)
+        if not is_existed:
+            # self.logger.error(f"Can not insert new record to non-existed collection: {collection_name}")
+            # return False
+            raise ValueError(f"Can not insert new record to non-existed collection: {collection_name}")
+
+
+        async with self.db_client() as session:
+            async with session.begin():
+                text_col = PgVectorTableSchemeEnums.TEXT.value
+                tsv_col = PgVectorTableSchemeEnums.TSV.value
+                chunk_id_col = PgVectorTableSchemeEnums.CHUNK_ID.value
+                stmt = sql_text(f"""
+                    SELECT {chunk_id_col},{text_col}, ts_rank_cd({tsv_col}, websearch_to_tsquery('{self.text_search_config_name}', :query)) AS score
+                    FROM "{collection_name}"
+                    WHERE {tsv_col} @@ websearch_to_tsquery('{self.text_search_config_name}', :query)
+                    ORDER BY score DESC
+                    LIMIT :limit;
+                """)
+                results = await session.execute(stmt, {"query": query, "limit": limit})
+                records = results.fetchall()
+        
+        if not records or len(records)==0:
+            self.logger.warning(f"No keyword matches found for query: {query}")
+            return []
+
+        return [
+            RetrievedDocument(
+                text = r.text,
+                score = r.score,
+                chunk_id = r.chunk_id)
+            for r in records
+        ]
+    

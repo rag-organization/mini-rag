@@ -14,6 +14,7 @@ class PgVectorTableSchemeEnums(Enum):
     VECTOR = "vector"
     CHUNK_ID = "chunk_id"
     METADATA = "metadata"
+    TSV = "tsv"
     _PREFIX = "pgvector"
     
 class PgVectorDistanceMethodEnums(Enum):
@@ -23,3 +24,8 @@ class PgVectorDistanceMethodEnums(Enum):
 class PgVectorIndexingTypeEnums(Enum):
     HNSW = "hnsw"
     IVFFLAT = "ivfflat"
+
+class PgvectorTextSearchConfigEnums(Enum):
+    SIMPLE = "simple"
+    ENGLISH = "english"
+    ARABIC = "arabic"

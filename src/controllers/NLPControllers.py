@@ -1,8 +1,12 @@
 from controllers.BaseController import BaseController
 from models.db_schemes import DataChunk
 from models.db_schemes import Project
+from models.db_schemes.minirag.schemes.data_chunk import RetrievedDocument
 from stores.llm.LLMEnum import CohereInputType
 import json
+from typing import List
+import asyncio
+
 class NLPController(BaseController):
 
     def __init__(self, vectordb_client, embedding_client, generation_client, template_parser):
@@ -80,15 +84,78 @@ class NLPController(BaseController):
 
         if not results:
             return False
-        
-        return json.loads(
-            json.dumps(
-                results, default=lambda x:x.__dict__
-            )
+
+
+        return results
+        # return json.loads(
+        #     json.dumps(
+        #         results, default=lambda x:x.__dict__
+        #     )
+        # )
+    
+    async def search_by_keyword(self,project:Project, text:str, limit:int):
+        collection_name = self.create_collection_name(project_id=project.project_id)
+
+        results = await self.vectordb_client.search_by_keyword(collection_name, text, limit)
+
+        if not results:
+            return []
+
+        return results
+
+    def reciprocal_rank_fusion(
+        self,
+        semantic_results: List[RetrievedDocument],
+        keyword_results: List[RetrievedDocument],
+        limit: int = 5,
+        k: int = 60
+    ) -> List[RetrievedDocument]:
+
+        rrf_scores = {}
+        doc_map = {}
+
+        for results in [semantic_results, keyword_results]:
+            for rank, doc in enumerate(results, start=1):
+
+                chunk_id = doc.chunk_id
+
+                if chunk_id is None:
+                    raise ValueError("RRF requires a chunk_id")
+
+                rrf_scores[chunk_id] = (
+                    rrf_scores.get(chunk_id, 0)
+                    + 1 / (k + rank)
+                )
+
+                doc_map[chunk_id] = doc
+
+        sorted_ids = sorted(
+            rrf_scores,
+            key=rrf_scores.get,
+            reverse=True
         )
 
+        return [
+            RetrievedDocument(
+                text=doc_map[chunk_id].text,
+                chunk_id=chunk_id,
+                score=rrf_scores[chunk_id]
+            )
+            for chunk_id in sorted_ids[:limit]
+        ]
+
+    async def hybrid_search(self, project: Project, text: str, limit: int = 5):
+        # condidat_limit = limit * limit
+        semantic_results, keyword_results = await asyncio.gather(
+            self.search_vectordb_collection(project=project, text=text, limit=limit),
+            self.search_by_keyword(project=project, text=text, limit=limit)
+        )
+
+        return self.reciprocal_rank_fusion(semantic_results, keyword_results)
+
+
     async def answer_rag_question(self,project:Project, query:str, limit:int=2):
-        retrieved_results = await self.search_vectordb_collection(project=project, text=query, limit=limit)
+        retrieved_results = await self.hybrid_search(project=project, text=query, limit=limit)
         # print(retrieved_results)
         if not retrieved_results:
             return "no retrieved results"
@@ -99,7 +166,7 @@ class NLPController(BaseController):
         document_prompt = "\n".join([
             self.template_parser.get_template("rag", "document_prompt", {
                 "doc_num":id+1,
-                "chunk_text":self.generation_client.process_text(chunk["text"])})
+                "chunk_text":self.generation_client.process_text(chunk.text)})
             for id,chunk in enumerate(retrieved_results)
         ])
 
@@ -111,4 +178,6 @@ class NLPController(BaseController):
         full_prompt = "\n\n".join([document_prompt, footer_template])
         result = self.generation_client.generate_text(prompt=full_prompt,chat_history=chat_history)
 
-        return result, full_prompt, chat_history
+        ## we add retrieved_results to the result
+        contexts = [doc.text for doc in retrieved_results]
+        return result, full_prompt, chat_history, contexts

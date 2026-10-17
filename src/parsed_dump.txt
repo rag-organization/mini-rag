@@ -1,0 +1,76 @@
+
+===== {'source': PosixPath('/mnt/c/Users/elbou/Desktop/mini-rag/src/assets/files/3/b4Hf3xmgqU3x_07_Scanned_Operational_Records.pdf'), 'page': 1, 'image_index': 1, 'content_type': 'pdf_image_ocr'} =====
+ATLASFLEET LOGISTICS
+
+OPERATIONS NOTICE OPS-2026-041
+Effective: 18 September 2026
+
+CASABLANCA DISPATCH UPDATE
+
+Standard order cutoff: 14:00
+
+Priority order cutoff: 16:00
+
+Same-day Casablanca cutoff: 11:00
+
+Sunday dispatch: closed
+
+Orders accepted after cutoff move to the next operating day.
+
+Customer support: 08:30-18:00 Monday-Saturday
+
+This notice replaces OPS-2026-033.
+
+Approved: Operations Manager
+
+===== {'source': PosixPath('/mnt/c/Users/elbou/Desktop/mini-rag/src/assets/files/3/b4Hf3xmgqU3x_07_Scanned_Operational_Records.pdf'), 'page': 2, 'image_index': 1, 'content_type': 'pdf_image_ocr'} =====
+ATLASFLEET LOGISTICS
+
+RETURN AUTHORIZATION RMA-2026-017
+
+Issued: 22 September 2026
+Shipment: SHP-2026-0127
+
+Client: Atlas Retail
+
+Product: TEA-250 | Green tea 250 g
+
+Lot: GT-260901
+
+Quantity: 12 cartons
+
+Reason: Water-damaged outer packaging
+
+Return destination: | Casablanca DC1
+
+Receiving zone: Q-02
+Deadline: 29 September 2026
+Disposition: HOLD - quality inspection required
+
+Do not return this lot to available stock.
+
+Approved by: Quality Desk
+
+===== {'source': PosixPath('/mnt/c/Users/elbou/Desktop/mini-rag/src/assets/files/3/b4Hf3xmgqU3x_07_Scanned_Operational_Records.pdf'), 'page': 3, 'image_index': 1, 'content_type': 'pdf_image_ocr'} =====
+ATLASFLEET LOGISTICS
+
+DOMESTIC SERVICE RATE CARD
+
+Revision 3 | Effective 01 September 2026
+
+Origin: Casablanca DC1
+
+All amounts in MAD, excluding tax.
+
+Destination Standard days Base fee Extra kg
+Casablanca 1 35 3
+Rabat 2 45 4
+Marrakech 2 55 5
+Agadir 3 65 6
+Tangier 3 60 5
+
+Base fee includes the first 5 kg.
+Additional weight is rounded up to the next whole kg.
+Priority surcharge: 25 MAD per shipment.
+
+Cash collection fee: 1.5% of collected amount.

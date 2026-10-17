@@ -1,0 +1,66 @@
+[
+  {
+    "question": "What are AtlasFleet's normal operating days and operating hours?",
+    "ground_truth": "AtlasFleet normally operates Monday through Saturday from 08:00 to 18:00 in the Africa/Casablanca timezone. Sunday is closed for routine receiving and dispatch."
+  },
+  {
+    "question": "How is available inventory calculated?",
+    "ground_truth": "Available quantity equals on-hand quantity minus reserved quantity minus quarantine quantity."
+  },
+  {
+    "question": "For receipt RCPT-2026-054, how many cartons were expected, received, quarantined, and initially available?",
+    "ground_truth": "100 cartons were expected, 96 were received, 4 were quarantined, and 92 were initially available before reservation."
+  },
+  {
+    "question": "Who decides whether held goods can be released from quarantine?",
+    "ground_truth": "Quality decides whether held goods can be released."
+  },
+  {
+    "question": "What is the standard transit time from Casablanca DC1 to Agadir?",
+    "ground_truth": "The standard transit time to Agadir is three operating days."
+  },
+  {
+    "question": "What is the transport charge for an 8.2 kg standard shipment to Agadir, excluding tax?",
+    "ground_truth": "89 MAD: 65 MAD base charge plus four additional kilograms at 6 MAD each."
+  },
+  {
+    "question": "Within how many operating days should a visible transit-damage return request be submitted?",
+    "ground_truth": "Within two operating days of delivery."
+  },
+  {
+    "question": "What are the permitted Quality disposition codes for returned goods?",
+    "ground_truth": "The permitted disposition codes are release, rework, reject, and hold."
+  },
+  {
+    "question": "What happened in incident INC-2026-006?",
+    "ground_truth": "A packing checker found one extra carton of NOTE-A4 on order ORD-2026-0108. The error was caught before dispatch, so no customer shortage or overdelivery occurred."
+  },
+  {
+    "question": "What was the status of the twelve returned TEA-250 cartons in INC-2026-011 at the 30 September snapshot?",
+    "ground_truth": "All twelve cartons remained on hold in Q-02 pending final Quality disposition."
+  },
+  {
+    "question": "Do the cited OSHA references establish Moroccan legal obligations for AtlasFleet?",
+    "ground_truth": "No. The OSHA references are from the United States and are used only as background for the simulated Moroccan company practices."
+  },
+  {
+    "question": "What was the 2024 total recordable case rate for US warehousing and storage in the public reference?",
+    "ground_truth": "4.8 cases per 100 full-time workers."
+  },
+  {
+    "question": "According to the scanned operations notice OPS-2026-041, what is the standard order cutoff?",
+    "ground_truth": "The standard order cutoff is 14:00."
+  },
+  {
+    "question": "According to scanned RMA-2026-017, what quantity of TEA-250 lot GT-260901 is authorized for return?",
+    "ground_truth": "12 cartons."
+  },
+  {
+    "question": "According to the OSHA warehousing text, what should happen to unsafe or defective forklifts?",
+    "ground_truth": "Unsafe or defective forklifts should be removed from service until the defect is properly repaired."
+  },
+  {
+    "question": "How often should each forklift operator's performance be evaluated according to the OSHA checklist?",
+    "ground_truth": "At least once every three years."
+  }
+]

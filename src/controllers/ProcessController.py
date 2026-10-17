@@ -2,24 +2,16 @@ from typing import List
 
 from .BaseController import BaseController
 from .ProjectController import ProjectController
-from models import ProcessingEnum
-from langchain_community.document_loaders import PyMuPDFLoader
-from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from dataclasses import dataclass
+from stores.processing import ProcessingProviderFactory
 import os
-
-
-@dataclass
-class Document:
-    page_content: str
-    metadata: dict
 
 class ProcessController(BaseController):
     def __init__(self, project_id:str):
         super().__init__()
         self.project_id = project_id
         self.file_path = ProjectController().get_project_path(project_id)
+        self.processing_provider_factory = ProcessingProviderFactory()
 
     def get_file_extension(self, file_id: str):
         return os.path.splitext(file_id)[-1]
@@ -30,20 +22,17 @@ class ProcessController(BaseController):
 
         if not os.path.exists(file_path):
             return None
-        
-        if file_ext == ProcessingEnum.PDF.value:
-            return PyMuPDFLoader(file_path)
-        if file_ext == ProcessingEnum.TXT.value:
-            return TextLoader(file_path, encoding="utf-8")
-        
-        return None
+
+        return self.processing_provider_factory.create(file_ext)
     
     def get_file_content(self, file_id: str):
         loader = self.get_file_loader(file_id)
         if loader:
-            return loader.load()
+            file_path = os.path.join(self.file_path, file_id)
+            return loader.load(file_path)
         
         return None
+                
 
     def process_file_content(self, file_content:list,file_id: str, chunk_size: int, overlap_size: int):
         text_splitter = RecursiveCharacterTextSplitter(
@@ -51,26 +40,20 @@ class ProcessController(BaseController):
             chunk_overlap=overlap_size, 
             length_function=len)
 
-        file_texts = [
-            doc.page_content
-            for doc in file_content
-        ]
+        # print(f"file content: {file_content}")
 
-        file_metadata = [
-            doc.metadata
-            for doc in file_content
-        ]
-
-        # chunks = text_splitter.create_documents(
-        #     file_texts,
-        #     metadatas= file_metadata)
-        chunks = self.simple_text_processer(
-            texts=file_texts,
-            metadata=file_metadata,
-            chunk_size=chunk_size,
-            tag_spliter="\n"
+        chunks = text_splitter.create_documents(
+            texts=[doc.page_content for doc in file_content],
+            metadatas=[
+                {
+                    **doc.metadata,
+                    "file_id": file_id,
+                }
+                for doc in file_content
+            ],
         )
 
+        # print(f"\n\n\nchunks: {chunks}")
         return chunks
 
     def simple_text_processer(self, texts: List[str], metadata:dict, chunk_size:int, tag_spliter:str = "\n"):
@@ -86,10 +69,10 @@ class ProcessController(BaseController):
             current_chunk += line + tag_spliter
 
             if len(current_chunk) > chunk_size:
-                chnks.append(Document(current_chunk, metadata))
+                chnks.append({"page_content": current_chunk, "metadata": metadata})
                 current_chunk = ""
 
         if len(current_chunk) > 0:
-            chnks.append(Document(current_chunk, metadata))
+            chnks.append({"page_content": current_chunk, "metadata": metadata})
 
         return chnks
