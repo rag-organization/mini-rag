@@ -1,0 +1,162 @@
+[
+  {
+    "question": "What are AtlasFleet's normal operating days and operating hours?",
+    "answer": "I'm sorry, but the documents provided do not contain information regarding AtlasFleet's normal operating days and operating hours.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "AtlasFleet normally operates Monday through Saturday from 08:00 to 18:00 in the Africa/Casablanca timezone. Sunday is closed for routine receiving and dispatch."
+  },
+  {
+    "question": "How is available inventory calculated?",
+    "answer": "I'm sorry, but the provided documents do not contain information on how available inventory is calculated.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "Available quantity equals on-hand quantity minus reserved quantity minus quarantine quantity."
+  },
+  {
+    "question": "For receipt RCPT-2026-054, how many cartons were expected, received, quarantined, and initially available?",
+    "answer": "I'm sorry, but the provided documents do not contain specific information regarding receipt RCPT-2026-054, including the number of cartons expected, received, quarantined, or initially available.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "100 cartons were expected, 96 were received, 4 were quarantined, and 92 were initially available before reservation."
+  },
+  {
+    "question": "Who decides whether held goods can be released from quarantine?",
+    "answer": "I'm sorry, but the provided documents do not contain information regarding who decides whether held goods can be released from quarantine.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "Quality decides whether held goods can be released."
+  },
+  {
+    "question": "What is the standard transit time from Casablanca DC1 to Agadir?",
+    "answer": "I'm sorry, but the documents provided do not contain information regarding the standard transit time from Casablanca DC1 to Agadir.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "The standard transit time to Agadir is three operating days."
+  },
+  {
+    "question": "What is the transport charge for an 8.2 kg standard shipment to Agadir, excluding tax?",
+    "answer": "I'm sorry, but the documents provided do not contain information regarding transport charges for shipments to Agadir.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "89 MAD: 65 MAD base charge plus four additional kilograms at 6 MAD each."
+  },
+  {
+    "question": "Within how many operating days should a visible transit-damage return request be submitted?",
+    "answer": "A visible transit-damage return request should be submitted within two operating days of delivery.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "Within two operating days of delivery."
+  },
+  {
+    "question": "What are the permitted Quality disposition codes for returned goods?",
+    "answer": "I'm sorry, but the provided documents do not contain information regarding the permitted Quality disposition codes for returned goods.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "The permitted disposition codes are release, rework, reject, and hold."
+  },
+  {
+    "question": "What happened in incident INC-2026-006?",
+    "answer": "I'm sorry, but I cannot provide information about incident INC-2026-006 as it is not covered in the documents provided.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "A packing checker found one extra carton of NOTE-A4 on order ORD-2026-0108. The error was caught before dispatch, so no customer shortage or overdelivery occurred."
+  },
+  {
+    "question": "What was the status of the twelve returned TEA-250 cartons in INC-2026-011 at the 30 September snapshot?",
+    "answer": "I'm sorry, but I cannot provide information regarding the status of the twelve returned TEA-250 cartons in INC-2026-011 based on the documents provided.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "All twelve cartons remained on hold in Q-02 pending final Quality disposition."
+  },
+  {
+    "question": "Do the cited OSHA references establish Moroccan legal obligations for AtlasFleet?",
+    "answer": "I'm sorry, but the provided documents do not contain any information regarding OSHA references or Moroccan legal obligations for AtlasFleet.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "No. The OSHA references are from the United States and are used only as background for the simulated Moroccan company practices."
+  },
+  {
+    "question": "What was the 2024 total recordable case rate for US warehousing and storage in the public reference?",
+    "answer": "I'm sorry, but I cannot provide information regarding the 2024 total recordable case rate for US warehousing and storage, as the documents provided do not contain relevant details on that topic.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "4.8 cases per 100 full-time workers."
+  },
+  {
+    "question": "According to the scanned operations notice OPS-2026-041, what is the standard order cutoff?",
+    "answer": "I'm sorry, but I cannot find information regarding the standard order cutoff in the provided documents.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "The standard order cutoff is 14:00."
+  },
+  {
+    "question": "According to scanned RMA-2026-017, what quantity of TEA-250 lot GT-260901 is authorized for return?",
+    "answer": "I'm sorry, but I cannot provide information regarding the quantity of TEA-250 lot GT-260901 authorized for return based on the documents provided.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "12 cartons."
+  },
+  {
+    "question": "According to the OSHA warehousing text, what should happen to unsafe or defective forklifts?",
+    "answer": "I'm sorry, but I cannot provide a response to your question about OSHA warehousing text and unsafe or defective forklifts, as the documents provided do not contain relevant information on that topic.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "Unsafe or defective forklifts should be removed from service until the defect is properly repaired."
+  },
+  {
+    "question": "How often should each forklift operator's performance be evaluated according to the OSHA checklist?",
+    "answer": "I'm sorry, but the provided documents do not contain information regarding the evaluation frequency of forklift operators' performance according to the OSHA checklist.",
+    "contexts": [
+      "transit-damage requests should be submitted within two operating days of delivery under this internal\npolicy. A return is not approved solely because a customer messages support. Support first verifies the\nshipment and evidence, then issues an authorization after the responsible role approves the request.\nFor shortages, compare order, packed quantity, loaded quantity and proof of delivery before deciding",
+      "AtlasFleet knowledge base | Simulated company records; public references identified separately\n1\nOperations handbook\nOPS-HB-01 | Revision 4 | Issued 30 September 2026 | Language: English\nControlled internal document for Casablanca DC1, Rabat cross-dock and Agadir delivery operations. This\nis a simulated business record prepared for RAG testing.\n1. Business scope and operating calendar\nAtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within",
+      "AtlasFleet Logistics handles packaged consumer goods and office supplies for retail clients within\nMorocco. Casablanca DC1 is the stockholding warehouse and dispatch origin. Rabat is a cross-dock\nlocation: goods move through the site for sorting and route consolidation, but it is not an approved\nlong-term storage location. Agadir is a delivery hub. A shipment addressed to Agadir does not mean its\nstock was stored there before dispatch. The warehouse does not accept live animals, hazardous"
+    ],
+    "ground_truth": "At least once every three years."
+  }
+]

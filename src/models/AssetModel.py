@@ -40,4 +40,7 @@ class AssetModel(BaseDataModel):
                 return None
             return record
 
+    async def get_project_record(self, project_id: str, asset_name: str):
+        return await self.get_asset_record(project_id=project_id, asset_name=asset_name)
+
     

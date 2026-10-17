@@ -166,7 +166,8 @@ class QdrantDB(VectorDBInterface):
         return [
             RetrievedDocument(
                 text = record.payload["text"],
-                score = record.score
+                score = record.score,
+                chunk_id = record.id
             )
             for record in records
         ]

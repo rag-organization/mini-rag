@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from routes import base, data, nlp
+from routes import base, data, nlp, ragas
 from helpers.config import get_config
 from pymongo import AsyncMongoClient
 from stores.llm.LLMProviderFactory import LLMProviderFactory
@@ -56,3 +56,4 @@ setup_metrics(app=app)
 app.include_router(base.base_router)
 app.include_router(data.data_router)
 app.include_router(nlp.nlp_router)
+app.include_router(ragas.ragas_router)

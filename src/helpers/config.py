@@ -30,14 +30,22 @@ class Config(BaseSettings):
     OPENAI_API_KEY: str = None
     OPENAI_API_URL: str = None
     COHERE_API_KEY: str = None
+    MISTRAL_API_KEY: str = None
+    GROQ_API_KEY: str = None
 
     GENERATION_MODEL_ID_LITERAL: List[str]=None
     GENERATION_MODEL_ID: str = None
     EMBEDDING_MODEL_ID: str = None
     EMBEDDING_MODEL_SIZE: int = None
+    
     INPUT_DAFAULT_MAX_CHARACTERS: int = None
     GENERATION_DAFAULT_MAX_TOKENS: int = None
     GENERATION_DAFAULT_TEMPERATURE: float = None
+    
+    # ragas config
+    RAGAS_GROQ_PROVIDER : str = None
+    RAGAS_MISTRAL_PROVIDER : str = None
+    RAGAS_OPENAI_PROVIDER : str = None
 
     ## vectordb config
     VECTOR_DB_BACKEND_LITERAL: List[str]=None
