@@ -1,3 +1,5 @@
+from pydantic import BaseModel
+
 from .rag_base import SQLAlchemyBase
 from sqlalchemy import Column, Integer,Computed,String, Index, ForeignKey, func # func is used to get the current time
 from sqlalchemy.orm import relationship
@@ -36,3 +38,9 @@ class ProductSearchIndex(SQLAlchemyBase):
 #     postgresql_using="hnsw",
 #     postgresql_ops={"embedding": "vector_cosine_ops"}
 # )
+
+class RetrievedProduct(BaseModel):
+    text: str 
+    score: float
+    product_id: int | None = None
+    ## then we can add metadata and so on

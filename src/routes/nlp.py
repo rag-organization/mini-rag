@@ -34,7 +34,7 @@ async def index_project(request: Request, project_id: int, push_request: NLPPush
             request.app.embedding_client, 
             request.app.generation_client,
             request.app.template_parser
-            )
+    )
     has_records = True
     page_no=1
     inserted_items_count = 0

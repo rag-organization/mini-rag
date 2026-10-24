@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from routes import base, data, nlp, ragas
+from routes import base, data, nlp, product, ragas, agent
 from helpers.config import get_config
 from pymongo import AsyncMongoClient
 from stores.llm.LLMProviderFactory import LLMProviderFactory
@@ -9,7 +9,12 @@ from stores.llm.templates.template_parser import TemplateParser
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from utils.metrics import setup_metrics
-
+from langchain_openai import ChatOpenAI
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+env_path = Path(__file__).resolve().parent / ".env"
+load_dotenv(dotenv_path=env_path)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     config = get_config()
@@ -38,7 +43,12 @@ async def lifespan(app: FastAPI):
 
     #template
     app.template_parser = TemplateParser(language=config.PRIMARY_LANG, default_language=config.DEFAULT_LANG)
-    
+
+    #chatopenai for agent
+    app.agent_llm = ChatOpenAI(
+    model="gpt-4o-mini",
+    temperature=0
+)
 
     yield
 
@@ -57,3 +67,5 @@ app.include_router(base.base_router)
 app.include_router(data.data_router)
 app.include_router(nlp.nlp_router)
 app.include_router(ragas.ragas_router)
+app.include_router(product.product_router)
+app.include_router(agent.agent_router)

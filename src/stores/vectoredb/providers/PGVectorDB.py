@@ -1,9 +1,11 @@
 from ..VectorDBInterface import VectorDBInterface
 from ..VectorDBEnum import VectorDBEnum, PgVectorIndexingTypeEnums, DistanceMethodEnum,PgVectorDistanceMethodEnums, PgVectorTableSchemeEnums, PgvectorTextSearchConfigEnums
-from models.db_schemes import RetrievedDocument
+from models.db_schemes import RetrievedDocument, ProductSearchIndex, RetrievedProduct
 import logging
 from typing import List
 from sqlalchemy  import text as sql_text
+from sqlalchemy.dialects.postgresql import insert
+
 import json
 class PGVectorDB(VectorDBInterface):
 
@@ -131,6 +133,7 @@ class PGVectorDB(VectorDBInterface):
             return True
         return False
 
+
     async def is_index_existed(self, collection_name: str) -> bool:
         index = self.default_index_name(collection_name=collection_name)
         async with self.db_client() as session:
@@ -253,6 +256,8 @@ class PGVectorDB(VectorDBInterface):
         await self.create_index(collection_name=collection_name)
         return True
 
+
+
     async def search_by_vector(self, collection_name: str, vector: list, limit: int) -> List[RetrievedDocument]:
         is_existed = await self.is_collection_existed(collection_name=collection_name)
         if not is_existed:
@@ -317,4 +322,168 @@ class PGVectorDB(VectorDBInterface):
                 chunk_id = r.chunk_id)
             for r in records
         ]
+
+        #### insert searchable text and vectors into productSearchTable.
     
+    async def upsert_product_search_index(self, product_ids:List[int], texts:list[str], vectors:List[List[float]]) -> int :
+
+        if not (len(product_ids) == len(texts) == len(vectors)):
+            raise ValueError("Input lengths must match")
+        values = [
+           { 
+            "product_id":product_id,
+            "searchable_text": text,
+            "embedding": vector,
+            }
+            for product_id, text, vector in zip(
+                product_ids, texts, vectors
+            )
+        ]
+
+        stmt = insert(ProductSearchIndex).values(values)
+
+        stmt = stmt.on_conflict_do_update(
+            index_elements=[ProductSearchIndex.product_id],
+            set_={
+                "searchable_text": stmt.excluded.searchable_text,
+                "embedding": stmt.excluded.embedding
+            }
+        )
+        async with self.db_client() as session:
+            async with session.begin():
+                await session.execute(stmt)
+
+        self.logger.info(
+        f"Upserted {len(product_ids)} product embeddings"
+        )
+
+        return len(product_ids)
+
+    ## build filters function for search
+    def _build_product_filters(
+        self,
+        category=None,
+        brand=None,
+        name=None,
+        color=None,
+        max_price=None,
+    ):
+        conditions = []
+        params = {}
+
+        if category:
+            conditions.append("LOWER(p.category) = LOWER(:category)")
+            params["category"] = category
+
+        if brand:
+            conditions.append("LOWER(p.brand) = LOWER(:brand)")
+            params["brand"] = brand
+
+        if name:
+            conditions.append("p.name ILIKE :name")
+            params["name"] = f"%{name}%"
+
+        if color:
+            conditions.append("LOWER(p.color) = LOWER(:color)")
+            params["color"] = color
+
+        if max_price is not None:
+            conditions.append("p.price <= :max_price")
+            params["max_price"] = max_price
+
+        # # Size and availability must refer to the same variant
+        # if size or in_stock:
+        #     variant_conditions = ["v.product_id = p.product_id"]
+
+        #     if size:
+        #         variant_conditions.append(
+        #             "LOWER(v.size) = LOWER(:size)"
+        #         )
+        #         params["size"] = size
+
+        #     if in_stock:
+        #         variant_conditions.append("v.stock > 0")
+
+        #     conditions.append(
+        #         "EXISTS (SELECT 1 FROM variants v WHERE "
+        #         + " AND ".join(variant_conditions)
+        #         + ")"
+        #     )
+
+        where_clause = " AND ".join(conditions) if conditions else "TRUE"
+
+        return where_clause, params
+
+    async def search_product_by_vector(self,vector:list,limit:int,**filters):
+        
+        vector = "["+",".join([ str(v) for v in vector ])+"]"
+        where_clause, params = self._build_product_filters(**filters)
+        stmt = sql_text(
+            f"""
+            SELECT psi.product_id , 
+            psi.searchable_text as text, 1-(psi.embedding <=> CAST(:vector AS vector)) as score 
+            FROM products_search_index psi
+            JOIN products p 
+            ON psi.product_id = p.product_id
+            WHERE {where_clause}
+            ORDER BY psi.embedding <=> CAST(:vector AS vector)
+            LIMIT :limit;
+            """
+        )
+            # WHERE {where_clause}
+        params.update({"vector": vector, "limit": limit})
+        # print(f"where_clause: {where_clause}")
+        # print(f"params: {params}")
+        async with self.db_client() as session:
+            async with session.begin():
+                
+                results = await session.execute(stmt, params)
+                records = results.mappings().all()
+        print(f"where_clause: {where_clause}")
+        print(f"search by vectors - results: {records}")     
+
+
+        return [
+            RetrievedProduct(
+                text= r.text,
+                score=r.score,
+                product_id=r.product_id
+            )
+            for r in records
+        ]
+
+    async def search_product_keyword(self, query:str, limit:int, **filters):
+
+        where_clause, params = self._build_product_filters(**filters)
+        stmt = sql_text(f"""
+                    SELECT psi.product_id, psi.searchable_text as text, ts_rank_cd(psi.tsv, websearch_to_tsquery(CAST(:config AS regconfig), :query)) AS score
+                    FROM products_search_index psi
+                    JOIN products p ON psi.product_id = p.product_id
+                    WHERE psi.tsv @@ websearch_to_tsquery(CAST(:config AS regconfig), :query)
+                    AND {where_clause}
+                    ORDER BY score DESC
+                    LIMIT :limit;
+                """)
+                    # AND {where_clause}
+        params.update({"query": query, "limit": limit, "config": self.text_search_config_name})
+        # params.update({"limit": limit, "config": self.text_search_config_name})
+        async with self.db_client() as session:
+            async with session.begin():
+
+                results = await session.execute(stmt, params)
+                records = results.mappings().all()
+        print(f"where_clause: {where_clause}, params:{params}")
+
+        print(f"search by keyword - results: {records}")     
+        if not records or len(records)==0:
+            self.logger.warning(f"No keyword matches found for query: {query}")
+            return []
+        
+        return [
+            RetrievedProduct(
+                text = r.text,
+                score = r.score,
+                product_id = r.product_id)
+            for r in records
+        ]
+            

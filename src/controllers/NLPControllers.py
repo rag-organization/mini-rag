@@ -23,6 +23,7 @@ class NLPController(BaseController):
         collection_name = self.create_collection_name(project_id=project.project_id)
         return await self.vectordb_client.delete_collection(collection_name=collection_name)
 
+
     async def get_vectordb_collection_info(self, project:Project):
         collection_name = self.create_collection_name(project_id=project.project_id)
         collection_infos = await self.vectordb_client.get_collection_info(collection_name=collection_name)

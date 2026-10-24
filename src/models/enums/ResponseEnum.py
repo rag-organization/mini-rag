@@ -18,3 +18,5 @@ class ResponseSignal(Enum):
     SEARCH_FAILED = "Search failed"
     RAG_RESPONSE_GENERATED_SUCCESSFULLY = "RAG response generated successfully"
     RAG_RESPONSE_GENERATED_FAILED = "RAG response generated failed"
+    INDEXING_FAILED = "Indexing failed"
+    INDEXED_SUCCESSFULLY = "Indexed successfully"

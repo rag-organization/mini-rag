@@ -20,7 +20,7 @@ class ChnukModel(BaseDataModel):
             async with session.begin():
                 session.add(chunk)
             await session.refresh(chunk)
-        return chunk
+        return chunk    
 
 
     async def get_chunk(self, chunk_id: str):

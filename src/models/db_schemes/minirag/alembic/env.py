@@ -25,6 +25,12 @@ target_metadata = SQLAlchemyBase.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+def include_name(name, type_, parent_names):
+
+    if type_ == "table" and name.startswith("collection_"):
+        return False
+
+    return True
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -42,6 +48,7 @@ def run_migrations_offline() -> None:
     context.configure(
         url=url,
         target_metadata=target_metadata,
+        include_name = include_name,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
