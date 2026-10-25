@@ -1,12 +1,18 @@
 from langchain_core.tools import tool
 ## search knowledge base from rag
+from pydantic import BaseModel, Field
+class ProductSearchInput(BaseModel):
+    query: str = Field(
+        description="Product name or natural-language shopping request"
+    )
 
 
+def create_product_search_tool(catalog_controller):
 
-def create_product_search_tool(catalog_controller, query:str):
-
-    @tool
-    async def search_products():
+    @tool("search_product",
+        args_schema=ProductSearchInput
+        )
+    async def search_products(query:str):
         """
         Search the store's clothing catalog.
         Use this tool when a customer wants to discover
@@ -15,10 +21,10 @@ def create_product_search_tool(catalog_controller, query:str):
         Supports semantic search, keyword search,
         and structured product filters.
         """
-        results = await catalog_controller.hybrid_search(query)
+        results = await catalog_controller.hybrid_search(query=query)
 
         return [
-            r.model_dumb()
+            r.model_dump()
             for r in (results or [])
         ]
     

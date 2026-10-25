@@ -175,7 +175,6 @@ class CatalogController(BaseController):
             for product_id in sorted_ids[:limit]
         ]
 
-    @staticmethod
     async def hybrid_search(self, query, limit:int=5, **filters):
         candidate_limit = limit * 4
         # print(f"query: {query}")

@@ -1,10 +1,16 @@
 
 from langchain_core.tools import tool
+from pydantic import BaseModel, Field
+class KnowledgeBaseSearchInput(BaseModel):
+    query: str = Field(
+        description="Product name or natural-language shopping request"
+    )
 
-def create_knowledgebase_tool(nlp_controller, project, query:str):
+def create_knowledgebase_tool(nlp_controller, project):
 
-    @tool
-    async def search_knowledge_base():
+    @tool("knowledgebase_search",
+          args_schema=KnowledgeBaseSearchInput)
+    async def search_knowledge_base(query):
         """
                 Search the store's knowledge base.
         
@@ -17,7 +23,7 @@ def create_knowledgebase_tool(nlp_controller, project, query:str):
         """
         results = await nlp_controller.hybrid_search(project=project, text=query)
         return [
-            r.model_dumb()
+            r.model_dump()
             for r in (results or [])
         ]
 

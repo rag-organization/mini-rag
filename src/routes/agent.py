@@ -38,7 +38,7 @@ async def chat(request:Request, project_id:int, chat_request:ChatRequest):
 
     
     dependencies = ToolsDependencies(nlp_controller=nlp_controller,catalog_controller=catalog_controller, project=project)
-    agent = StylistAgent(llm=request.app.agent_llm,dependencies=dependencies, query=chat_request.message)
+    agent = StylistAgent(llm=request.app.agent_llm,dependencies=dependencies)
     response = await agent.chat(chat_request.message)
 
     return {

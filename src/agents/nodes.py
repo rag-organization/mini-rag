@@ -28,7 +28,8 @@ def create_agent_node(llm, tools):
             SystemMessage(content=SYSTEM_PROMPT),
             *state["messages"]]
         )
-        print("response from node:", response)
-        return {"messagaes":[response]}
+        print("Generated tool calls:", response.tool_calls)
+
+        return {"messages":[response]}
     
     return agent_node

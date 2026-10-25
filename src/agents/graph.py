@@ -29,6 +29,8 @@ def create_stylist_graph(llm, tools):
         }
     )
     print("graph created")
+    graph.add_edge("tools", "assistant")
+
     print(graph)
     # compile
 
