@@ -186,3 +186,6 @@ class CatalogController(BaseController):
         # print(f"seamntic_results: {seamntic_results}")
         # print(f"keyword_results: {keyword_results}")
         return self.reciprocal_rank_fusion(seamntic_results, keyword_results, limit=limit)
+
+    async def search_by_keyword(self, query, limit:int=5, **filters):
+        return await self.vectordb_client.search_product_keyword(query=query, limit=limit, **filters)
