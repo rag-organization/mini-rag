@@ -24,5 +24,7 @@ from dataclasses import dataclass
 class ToolsDependencies:
     nlp_controller: object
     catalog_controller: object
-    # product_model:object
     project:object
+
+    catalog_service: object
+    outfit_service: object
