@@ -1,4 +1,4 @@
-from langchian_core.tools import tool
+from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 
@@ -14,7 +14,7 @@ class CheckStocktInput(BaseModel):
     )
 
 def create_check_stock_tool(catalog_service):
-    @tool("size_chart_tool",args_schema=CheckStocktInput)
+    @tool("check_stock_tool",args_schema=CheckStocktInput)
     async def check_stock(
         product_id: int,
         size: float

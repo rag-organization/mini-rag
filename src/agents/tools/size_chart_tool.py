@@ -1,14 +1,33 @@
-from langchian_core.tools import tool
+from langchain_core.tools import tool
 from pydantic import BaseModel, Field
 from models.db_schemes.minirag.schemes import SizeChart
 from sqlalchemy import select
 from services.CatalogService import CatalogToolsService
 class SizeChartInput(BaseModel):
-    product_id= Field(..., description="jdjd")
-    chest_cm = Field
+    product_id: int = Field(
+        gt=0,
+        description="Product ID from the product catalog"
+    )
 
+    chest_cm: float | None = Field(
+        default=None,
+        gt=0,
+        description="Customer chest circumference in centimeters"
+    )
 
-def create_get_size_chart_tool(catalog_service):
+    waist_cm: float | None = Field(
+        default=None,
+        gt=0,
+        description="Customer waist circumference in centimeters"
+    )
+
+    hip_cm: float | None = Field(
+        default=None,
+        gt=0,
+        description="Customer hip circumference in centimeters"
+    )
+
+def create_size_chart_tool(catalog_service):
     @tool("size_chart_tool",args_schema=SizeChartInput)
     async def recommend_size(
         product_id: int,
