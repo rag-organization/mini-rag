@@ -28,4 +28,4 @@ class ProductCreate(BaseModel):
 class SearchProduct(BaseModel):
     query: str
     limit: int = 5
-    filters: dict | None
+    filters: dict | None = None
