@@ -5,6 +5,9 @@ from models.ProductModule import ProductModel
 from agents.agent import StylistAgent
 from models.ProjectModel import ProjectModel
 from .schemas.agent import ChatRequest
+from services import CatalogToolsService, OutfitService
+
+
 agent_router = APIRouter(
     prefix = "/api/v1/agent",
     tags = ["api_v1","agent"]
@@ -36,9 +39,22 @@ async def chat(request:Request, project_id:int, chat_request:ChatRequest):
     project_model = await ProjectModel.create_instance(db_client=request.app.db_client)
     project = await project_model.get_project_or_create_one(project_id=project_id)
 
+    catalog_service = CatalogToolsService(db_client=request.app.db_client)
+    outfit_service = OutfitService(
+        db_client=request.app.db_client, 
+        catalog_controller=catalog_controller)
     
-    dependencies = ToolsDependencies(nlp_controller=nlp_controller,catalog_controller=catalog_controller, project=project)
-    agent = StylistAgent(llm=request.app.agent_llm,dependencies=dependencies)
+    dependencies = ToolsDependencies(
+        nlp_controller=nlp_controller,
+        catalog_controller=catalog_controller, 
+        project=project, 
+        catalog_service=catalog_service, 
+        outfit_service=outfit_service)
+    
+
+    agent = StylistAgent(
+        llm=request.app.agent_llm,
+        dependencies=dependencies)
     response = await agent.chat(chat_request.message)
 
     return {
