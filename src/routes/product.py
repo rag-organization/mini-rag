@@ -88,7 +88,10 @@ async def search_product(request: Request, search_product:SearchProduct):
     )
     results = []
     try:
+        if search_product.filters is None:
+            search_product.filters = {}
         results = await catalog_controller.hybrid_search(query=search_product.query, limit=search_product.limit, **search_product.filters)
+        # results = await catalog_controller.search_by_keyword(query=search_product.query, limit=search_product.limit, **search_product.filters)
     except Exception:
         logging.getLogger("uvicorn").exception(
             "error searching product",
@@ -98,3 +101,5 @@ async def search_product(request: Request, search_product:SearchProduct):
         "message":ResponseSignal.SEARCH_SUCCESSFULLY.value,
         "results":results
     }
+
+

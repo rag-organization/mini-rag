@@ -2,6 +2,7 @@ from langgraph.graph import StateGraph, END, START
 from langgraph.prebuilt import ToolNode, tools_condition
 from .nodes import create_agent_node
 from .state import StylistState
+from langgraph.checkpoint.memory import MemorySaver
 
 def create_stylist_graph(llm, tools):
     ## create graph
@@ -34,4 +35,4 @@ def create_stylist_graph(llm, tools):
     print(graph)
     # compile
 
-    return graph.compile()
+    return graph.compile(checkpointer=MemorySaver())

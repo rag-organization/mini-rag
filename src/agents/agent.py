@@ -10,6 +10,8 @@ class StylistAgent:
 
 
     async def chat(self, message:str)->str:
+        config = {"configurable": {"thread_id": "1"},
+                "recursion_limit": 16}
         for tool in self.tools:
             print("Tool:", tool.name)
             print("Schema:", tool.args)
@@ -18,9 +20,7 @@ class StylistAgent:
             {
             "messages" : [HumanMessage(content=message)]
             },
-            config={
-                "recursion_limit": 16
-            }
+            config=config
         )
         print("\n=== FINAL GRAPH STATE ===")
 
