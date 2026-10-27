@@ -439,8 +439,8 @@ class PGVectorDB(VectorDBInterface):
                 
                 results = await session.execute(stmt, params)
                 records = results.mappings().all()
-        print(f"where_clause: {where_clause}")
-        print(f"search by vectors - results: {records}")     
+        # print(f"where_clause: {where_clause}")
+        # print(f"search by vectors - results: {records}")     
 
 
         return [
@@ -455,6 +455,10 @@ class PGVectorDB(VectorDBInterface):
     async def search_product_keyword(self, query:str, limit:int, **filters):
 
         where_clause, params = self._build_product_filters(**filters)
+        # add OR betwen words in query
+        if len(query.split(" ")) > 1:
+            query = " OR ".join(query.split(" "))
+            
         stmt = sql_text(f"""
                     SELECT psi.product_id, psi.searchable_text as text, ts_rank_cd(psi.tsv, websearch_to_tsquery(CAST(:config AS regconfig), :query)) AS score
                     FROM products_search_index psi
@@ -469,12 +473,12 @@ class PGVectorDB(VectorDBInterface):
         # params.update({"limit": limit, "config": self.text_search_config_name})
         async with self.db_client() as session:
             async with session.begin():
-
                 results = await session.execute(stmt, params)
                 records = results.mappings().all()
-        print(f"where_clause: {where_clause}, params:{params}")
 
-        print(f"search by keyword - results: {records}")     
+        # print(f"where_clause: {where_clause}, params:{params}")
+
+        # print(f"search by keyword - results: {records}")     
         if not records or len(records)==0:
             self.logger.warning(f"No keyword matches found for query: {query}")
             return []
