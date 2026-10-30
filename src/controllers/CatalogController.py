@@ -170,7 +170,9 @@ class CatalogController(BaseController):
             RetrievedProduct(
                 text=doc_map[product_id].text,
                 product_id=product_id,
-                score=rrf_scores[product_id]
+                score=rrf_scores[product_id],
+                price=doc_map[product_id].price,
+                color=doc_map[product_id].color,
             )
             for product_id in sorted_ids[:limit]
         ]
@@ -187,5 +189,5 @@ class CatalogController(BaseController):
         # print(f"keyword_results: {keyword_results}")
         return self.reciprocal_rank_fusion(seamntic_results, keyword_results, limit=limit)
 
-    async def search_by_keyword(self, query, limit:int=5, **filters):
-        return await self.vectordb_client.search_product_keyword(query=query, limit=limit, **filters)
+    # async def search_by_keyword(self, query, limit:int=5, **filters):
+    #     return await self.vectordb_client.search_product_keyword(query=query, limit=limit, **filters)

@@ -57,6 +57,10 @@ class Config(BaseSettings):
     # template parser
     PRIMARY_LANG: str = None
     DEFAULT_LANG: str = None
+
+
+    # fixed project id
+    FIXED_PROJECT_ID: int = None
 @lru_cache()
 def get_config() -> Config:
     return Config()

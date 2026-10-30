@@ -1,5 +1,8 @@
+from uuid import uuid4
+
 from agents.dependecies import ToolsDependencies
-from fastapi import APIRouter, Request
+from dependencies import get_agent
+from fastapi import APIRouter, Request, Depends
 from controllers import CatalogController, NLPController
 from models.ProductModule import ProductModel
 from agents.agent import StylistAgent
@@ -7,6 +10,8 @@ from models.ProjectModel import ProjectModel
 from .schemas.agent import ChatRequest
 from services import CatalogToolsService, OutfitService
 
+import json
+from langchain_core.messages import ToolMessage
 
 agent_router = APIRouter(
     prefix = "/api/v1/agent",
@@ -18,45 +23,45 @@ def health():
     return {
         "message":"agent api"
     }
-@agent_router.post("/chat/{project_id}")
-async def chat(request:Request, project_id:int, chat_request:ChatRequest):
+
+
+def extract_product_ids(agent_response: dict) -> list[int]:
+    product_ids = []
+
+    for message in agent_response["messages"]:
+        if isinstance(message, ToolMessage) and message.name == "product_search_tool":
+            products = json.loads(message.content)
+
+            product_ids.extend(
+                p["product_id"]
+                for p in products
+                if "product_id" in p
+            )
+
+    return list(dict.fromkeys(product_ids))
+
+@agent_router.post("/chat/")
+async def chat(
+    chat_request:ChatRequest,
+    agent: StylistAgent = Depends(get_agent),):
+
+    ## calcule the request time
+    import time
+    start_time = time.time()
 
     
-    nlp_controller = NLPController(
-        request.app.vector_db_client, 
-        request.app.embedding_client, 
-        request.app.generation_client,
-        request.app.template_parser
-    )
-    product_model = await ProductModel.create_instance(request.app.vector_db_client.db_client)
-    catalog_controller = CatalogController(
-        vectordb_client = request.app.vector_db_client, 
-        embedding_client = request.app.embedding_client, 
-        generation_client = request.app.generation_client,
-        product_model = product_model
-    )
+    conversation_id = str(chat_request.conversation_id or uuid4() )
 
-    project_model = await ProjectModel.create_instance(db_client=request.app.db_client)
-    project = await project_model.get_project_or_create_one(project_id=project_id)
-
-    catalog_service = CatalogToolsService(db_client=request.app.db_client)
-    outfit_service = OutfitService(
-        db_client=request.app.db_client, 
-        catalog_controller=catalog_controller)
-    
-    dependencies = ToolsDependencies(
-        nlp_controller=nlp_controller,
-        catalog_controller=catalog_controller, 
-        project=project, 
-        catalog_service=catalog_service, 
-        outfit_service=outfit_service)
-    
-
-    agent = StylistAgent(
-        llm=request.app.agent_llm,
-        dependencies=dependencies)
-    response = await agent.chat(chat_request.message)
-
+    response = await agent.chat(chat_request.message, conversation_id)
+    product_ids = extract_product_ids(response)
+    #
+    # calcule the request time
+    end_time = time.time()
+    request_time = end_time - start_time
     return {
-        "response":response
+        "response":response["messages"][-1].content,
+        "products_ids":product_ids,
+        "conversation_id":conversation_id,
+        "request_time":request_time
     }
+

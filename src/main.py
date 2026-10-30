@@ -1,8 +1,11 @@
 from contextlib import asynccontextmanager
+from agents.agent import StylistAgent
+from agents.dependecies import ToolsDependencies
 from fastapi import FastAPI
-from routes import base, data, nlp, product, ragas, agent
+from models.ProductModule import ProductModel
+from models.ProjectModel import ProjectModel
+from routes import base, data, nlp, product, agent, ragas
 from helpers.config import get_config
-from pymongo import AsyncMongoClient
 from stores.llm.LLMProviderFactory import LLMProviderFactory
 from stores.vectoredb.VectorDBProviderFactory import VectorDBProviderFactory
 from stores.llm.templates.template_parser import TemplateParser
@@ -13,8 +16,25 @@ from langchain_openai import ChatOpenAI
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from langgraph.checkpoint.memory import InMemorySaver
+from services import CatalogToolsService, OutfitService
+
+from controllers import (
+    CatalogController, 
+    NLPController, 
+    ProductRetrievalEvalController, 
+    RetrievalEvalController, 
+    ProjectController, 
+    DataController, 
+    ProcessController, 
+    ProjectController, 
+    BaseController
+    )
+
 env_path = Path(__file__).resolve().parent / ".env"
 load_dotenv(dotenv_path=env_path)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     config = get_config()
@@ -50,6 +70,51 @@ async def lifespan(app: FastAPI):
     temperature=0
 )
 
+    ## add checkpoint saver for short-term memory
+    app.checkpointer = InMemorySaver()
+
+    ## initialize the controllers
+    app.project_id = config.FIXED_PROJECT_ID
+    app.project_model = await ProjectModel.create_instance(app.db_client)
+    app.product_model = await ProductModel.create_instance(app.db_client)
+    app.project = await app.project_model.get_project_or_create_one(project_id=app.project_id)
+
+
+
+    app.nlp_controller = NLPController(
+        app.vector_db_client, 
+        app.embedding_client, 
+        app.generation_client, 
+        app.template_parser
+    )
+
+    app.catalog_controller = CatalogController(
+        vectordb_client = app.vector_db_client, 
+        embedding_client = app.embedding_client, 
+        generation_client = app.generation_client,
+        product_model = app.product_model
+    )
+    app.retrieval_eval_controller = RetrievalEvalController(nlp_controller=app.nlp_controller)
+    app.product_retrieval_eval_controller = ProductRetrievalEvalController(catalog_controller=app.catalog_controller)
+    app.project_controller = ProjectController()
+
+    ## agent services
+    catalog_service = CatalogToolsService(db_client=app.db_client)
+    outfit_service = OutfitService(db_client= app.db_client, catalog_controller=app.catalog_controller)
+
+    ## 
+    app.tools_dependencies = ToolsDependencies(
+        nlp_controller = app.nlp_controller,
+        catalog_controller = app.catalog_controller,
+        project = app.project,
+        catalog_service = catalog_service,
+        outfit_service = outfit_service,
+    )
+    app.agent = StylistAgent(
+        llm = app.agent_llm,
+        dependencies=app.tools_dependencies,
+        checkpointer=app.checkpointer
+    )
     yield
 
     print("application shutting down...")

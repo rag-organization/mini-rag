@@ -8,7 +8,7 @@ class KnowledgeBaseSearchInput(BaseModel):
 
 def create_knowledgebase_tool(nlp_controller, project):
 
-    @tool("knowledgebase_search",
+    @tool("knowledgebase_search_tool",
           args_schema=KnowledgeBaseSearchInput)
     async def search_knowledge_base(query):
         """

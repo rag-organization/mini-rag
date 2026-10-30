@@ -41,7 +41,6 @@ def create_outfit_tool(outfit_service):
 
         Return only products supported by catalog search.
         """
-
         return await outfit_service.build_outfit(
                 occasion=occasion, 
                 categories=categories, 

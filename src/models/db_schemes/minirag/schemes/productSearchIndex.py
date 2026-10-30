@@ -43,4 +43,6 @@ class RetrievedProduct(BaseModel):
     text: str 
     score: float
     product_id: int | None = None
-    ## then we can add metadata and so on
+    price: float | None = None
+    color: str | None = None
+    

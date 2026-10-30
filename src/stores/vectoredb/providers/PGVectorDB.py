@@ -367,6 +367,8 @@ class PGVectorDB(VectorDBInterface):
         name=None,
         color=None,
         max_price=None,
+        size=None,
+        in_stock=None
     ):
         conditions = []
         params = {}
@@ -391,27 +393,25 @@ class PGVectorDB(VectorDBInterface):
             conditions.append("p.price <= :max_price")
             params["max_price"] = max_price
 
-        # # Size and availability must refer to the same variant
-        # if size or in_stock:
-        #     variant_conditions = ["v.product_id = p.product_id"]
+        # Size and availability must refer to the same variant
+        if size or in_stock:
+            variant_conditions = ["v.product_id = p.product_id"]
 
-        #     if size:
-        #         variant_conditions.append(
-        #             "LOWER(v.size) = LOWER(:size)"
-        #         )
-        #         params["size"] = size
+            if size:
+                variant_conditions.append(
+                    "LOWER(v.size) = LOWER(:size)"
+                )
+                params["size"] = size
 
-        #     if in_stock:
-        #         variant_conditions.append("v.stock > 0")
+            if in_stock:
+                variant_conditions.append("v.stock > 0")
 
-        #     conditions.append(
-        #         "EXISTS (SELECT 1 FROM variants v WHERE "
-        #         + " AND ".join(variant_conditions)
-        #         + ")"
-        #     )
-
+            conditions.append(
+                "EXISTS (SELECT 1 FROM variants v WHERE "
+                + " AND ".join(variant_conditions)
+                + ")"
+            )
         where_clause = " AND ".join(conditions) if conditions else "TRUE"
-
         return where_clause, params
 
     async def search_product_by_vector(self,vector:list,limit:int,**filters):
@@ -420,7 +420,7 @@ class PGVectorDB(VectorDBInterface):
         where_clause, params = self._build_product_filters(**filters)
         stmt = sql_text(
             f"""
-            SELECT psi.product_id , 
+            SELECT psi.product_id , p.price, p.color, 
             psi.searchable_text as text, 1-(psi.embedding <=> CAST(:vector AS vector)) as score 
             FROM products_search_index psi
             JOIN products p 
@@ -432,22 +432,20 @@ class PGVectorDB(VectorDBInterface):
         )
             # WHERE {where_clause}
         params.update({"vector": vector, "limit": limit})
-        # print(f"where_clause: {where_clause}")
-        # print(f"params: {params}")
         async with self.db_client() as session:
             async with session.begin():
                 
                 results = await session.execute(stmt, params)
-                records = results.mappings().all()
-        # print(f"where_clause: {where_clause}")
-        # print(f"search by vectors - results: {records}")     
+                records = results.mappings().all()   
 
 
         return [
             RetrievedProduct(
                 text= r.text,
                 score=r.score,
-                product_id=r.product_id
+                product_id=r.product_id,
+                price=r.price,
+                color=r.color,
             )
             for r in records
         ]
@@ -460,7 +458,7 @@ class PGVectorDB(VectorDBInterface):
             query = " OR ".join(query.split(" "))
             
         stmt = sql_text(f"""
-                    SELECT psi.product_id, psi.searchable_text as text, ts_rank_cd(psi.tsv, websearch_to_tsquery(CAST(:config AS regconfig), :query)) AS score
+                    SELECT psi.product_id, psi.searchable_text as text,  p.price, p.color, ts_rank_cd(psi.tsv, websearch_to_tsquery(CAST(:config AS regconfig), :query)) AS score
                     FROM products_search_index psi
                     JOIN products p ON psi.product_id = p.product_id
                     WHERE psi.tsv @@ websearch_to_tsquery(CAST(:config AS regconfig), :query)
@@ -487,7 +485,10 @@ class PGVectorDB(VectorDBInterface):
             RetrievedProduct(
                 text = r.text,
                 score = r.score,
-                product_id = r.product_id)
+                product_id = r.product_id,
+                price=r.price,
+                color=r.color,
+            )
             for r in records
         ]
             

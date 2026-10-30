@@ -1,0 +1,353 @@
+[
+  {
+    "query": "Find the chocolate suede penny loafers by Azel Leather. What is the price?",
+    "ground_truth": "The Suede Penny Loafers in Chocolate by Azel Leather cost 929 MAD.",
+    "expected_tools": [
+      {
+        "tool_name": "product_search_tool",
+        "input_parameters": {
+          "query": "chocolate suede penny loafers",
+          "filters": {
+            "brand": "Azel Leather"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "query": "Show me the Atlas & Co. heavyweight boxy t-shirt in stone.",
+    "ground_truth": "Here's the Heavyweight Boxy T-Shirt in Stone by Atlas & Co. It has a relaxed fit and costs 239 MAD.",
+    "expected_tools": [
+      {
+        "tool_name": "product_search_tool",
+        "input_parameters": {
+          "query": "heavyweight boxy t-shirt stone",
+          "filters": {
+            "brand": "Atlas & Co."
+          }
+        }
+      }
+    ]
+  },
+  {
+    "query": "Find a cream double-breasted women's blazer by Northline.",
+    "ground_truth": "Yes, we have the Double-Breasted Blazer in Cream by Northline, priced at 999 MAD.",
+    "expected_tools": [
+      {
+        "tool_name": "product_search_tool",
+        "input_parameters": {
+          "query": "cream double-breasted blazer",
+          "filters": {
+            "brand": "Northline"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "query": "Do you sell a sage scarf from Noura Atelier?",
+    "ground_truth": "Yes, we have the Soft Modal Everyday Scarf in Sage by Noura Atelier. It costs 199 MAD.",
+    "expected_tools": [
+      {
+        "tool_name": "product_search_tool",
+        "input_parameters": {
+          "query": "sage scarf",
+          "filters": {
+            "brand": "Noura Atelier"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "query": "Check stock for product_id 1 (Essential Crewneck T-Shirt - White) in size XL.",
+    "ground_truth": "The Essential Crewneck T-Shirt in White is currently out of stock in size XL.",
+    "expected_tools": [
+      {
+        "tool_name": "check_stock_tool",
+        "input_parameters": {
+          "product_id": 1,
+          "size": "XL"
+        }
+      }
+    ]
+  },
+  {
+    "query": "Check stock for product_id 2 (Essential Crewneck T-Shirt - Black) in size M.",
+    "ground_truth": "The Essential Crewneck T-Shirt in Black is available in size M, with 21 units in stock.",
+    "expected_tools": [
+      {
+        "tool_name": "check_stock_tool",
+        "input_parameters": {
+          "product_id": 2,
+          "size": "M"
+        }
+      }
+    ]
+  },
+  {
+    "query": "Check stock for product_id 132 (Suede Penny Loafers - Chocolate) in size EU 45.",
+    "ground_truth": "The Chocolate Suede Penny Loafers are currently out of stock in size EU 45.",
+    "expected_tools": [
+      {
+        "tool_name": "check_stock_tool",
+        "input_parameters": {
+          "product_id": 132,
+          "size": "EU 45"
+        }
+      }
+    ]
+  },
+  {
+    "query": "Check stock for product_id 119 (Utility Overshirt Jacket - Sand) in size L.",
+    "ground_truth": "The Utility Overshirt Jacket in Sand is available in size L, with 40 units in stock.",
+    "expected_tools": [
+      {
+        "tool_name": "check_stock_tool",
+        "input_parameters": {
+          "product_id": 119,
+          "size": "L"
+        }
+      }
+    ]
+  },
+  {
+    "query": "According to the size chart, what is the recommended chest range for product_id 1 (Essential Crewneck T-Shirt - White) in size M?",
+    "ground_truth": "For the Essential Crewneck T-Shirt in White, size M is recommended for a body chest measurement of 95–101 cm.",
+    "expected_tools": [
+      {
+        "tool_name": "size_chart_tool",
+        "input_parameters": {
+          "product_id": 1,
+          "size_label": "M"
+        }
+      }
+    ]
+  },
+  {
+    "query": "According to the size chart, what is the recommended waist range for product_id 81 (Linen Midi Shirt Dress - Sand) in size M?",
+    "ground_truth": "For the Linen Midi Shirt Dress in Sand, size M is recommended for a body waist measurement of 71–76 cm.",
+    "expected_tools": [
+      {
+        "tool_name": "size_chart_tool",
+        "input_parameters": {
+          "product_id": 81,
+          "size_label": "M"
+        }
+      }
+    ]
+  },
+  {
+    "query": "According to the size chart, what is the recommended chest range for product_id 119 (Utility Overshirt Jacket - Sand) in size XL?",
+    "ground_truth": "For the Utility Overshirt Jacket in Sand, size XL is recommended for a body chest measurement of 109–115 cm.",
+    "expected_tools": [
+      {
+        "tool_name": "size_chart_tool",
+        "input_parameters": {
+          "product_id": 119,
+          "size_label": "XL"
+        }
+      }
+    ]
+  },
+  
+
+  {
+    "query": "Build a men's smart-casual outfit with a shirt, trousers and loafers for 1800 MAD or less.",
+    "ground_truth": "For a smart-casual look, I'd pair the White Oxford Button-Down Shirt (379 MAD) with Beige Tailored Chino Trousers (449 MAD) and Chocolate Suede Penny Loafers (929 MAD). The total is 1,757 MAD, within your 1,800 MAD budget.",
+    "expected_tools": [
+      {
+        "tool_name": "build_outfit_tool",
+        "input_parameters": {
+          "budget_mad": 1800,
+          "required_categories": [
+            "Men / Shirts",
+            "Men / Trousers",
+            "Footwear / Loafers"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "query": "Build a men's casual weekend outfit with a t-shirt, jeans and sneakers for 1100 MAD or less.",
+    "ground_truth": "For a casual weekend outfit, try the White Essential Crewneck T-Shirt (159 MAD), Mid Blue Straight-Leg Denim Jeans (479 MAD), and Off White Canvas Low-Top Sneakers (429 MAD). Together they cost 1,067 MAD, within your 1,100 MAD budget.",
+    "expected_tools": [
+      {
+        "tool_name": "build_outfit_tool",
+        "input_parameters": {
+          "budget_mad": 1100,
+          "required_categories": [
+            "Men / T-Shirts",
+            "Men / Jeans",
+            "Footwear / Sneakers"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "query": "Build a women's office outfit with a blouse, trousers and blazer for 1900 MAD or less.",
+    "ground_truth": "For the office, I'd suggest the White Relaxed Poplin Blouse (369 MAD), Camel Pleated Wide-Leg Trousers (509 MAD), and Black Double-Breasted Blazer (979 MAD). The complete outfit costs 1,857 MAD, within your 1,900 MAD budget.",
+    "expected_tools": [
+      {
+        "tool_name": "build_outfit_tool",
+        "input_parameters": {
+          "budget_mad": 1900,
+          "required_categories": [
+            "Women / Blouses",
+            "Women / Trousers",
+            "Women / Blazers"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "query": "Find the black Casa Essentials crewneck t-shirt and tell me how many size M units are available.",
+    "ground_truth": "The Black Essential Crewneck T-Shirt by Casa Essentials is available in size M, with 21 units in stock.",
+    "expected_tools": [
+      {
+        "tool_name": "product_search_tool",
+        "input_parameters": {
+          "query": "black Casa Essentials crewneck t-shirt",
+          "filters": {
+            "brand": "Casa Essentials",
+            "color": "Black"
+          }
+        }
+      },
+      {
+        "tool_name": "check_stock_tool",
+        "input_parameters": {
+          "product_id": 2,
+          "size": "M"
+        }
+      }
+    ]
+  },
+  {
+    "query": "Find the cream double-breasted Northline blazer and give me its size M chest measurement range.",
+    "ground_truth": "For Northline's Cream Double-Breasted Blazer, size M is recommended for a body chest measurement of 90–95 cm.",
+    "expected_tools": [
+      {
+        "tool_name": "product_search_tool",
+        "input_parameters": {
+          "query": "cream Northline double-breasted blazer",
+          "filters": {
+            "brand": "Northline",
+            "color": "Cream"
+          }
+        }
+      },
+      {
+        "tool_name": "size_chart_tool",
+        "input_parameters": {
+          "product_id": 106,
+          "size_label": "M"
+        }
+      }
+    ]
+  },
+  {
+    "query": "Find the white Essential Crewneck T-Shirt from Casa Essentials and tell me if XL is available.",
+    "ground_truth": "The White Essential Crewneck T-Shirt by Casa Essentials is currently out of stock in size XL.",
+    "expected_tools": [
+      {
+        "tool_name": "product_search_tool",
+        "input_parameters": {
+          "query": "Essential Crewneck T-Shirt White Casa Essentials",
+          "filters": {
+            "color": "White"
+          }
+        }
+      },
+      {
+        "tool_name": "check_stock_tool",
+        "input_parameters": {
+          "product_id": 1,
+          "size": "XL"
+        }
+      }
+    ]
+  },
+  {
+    "query": "Build a men's smart-casual outfit with shirt, trousers and loafers under 1800 MAD. Also check whether the Chocolate Suede Penny Loafers, product_id 132, are available in EU 42.",
+    "ground_truth": "For a smart-casual outfit, you could choose the White Oxford Button-Down Shirt, Beige Tailored Chino Trousers, and Chocolate Suede Penny Loafers for a total of 1,757 MAD. The loafers are also available in EU 42, with 35 pairs in stock.",
+    "expected_tools": [
+      {
+        "tool_name": "build_outfit_tool",
+        "input_parameters": {
+          "budget_mad": 1800,
+          "required_categories": [
+            "Men / Shirts",
+            "Men / Trousers",
+            "Footwear / Loafers"
+          ]
+        }
+      },
+      {
+        "tool_name": "check_stock_tool",
+        "input_parameters": {
+          "product_id": 132,
+          "size": "EU 42"
+        }
+      }
+    ]
+  },
+  {
+    "query": "Find the sand Utility Overshirt Jacket by Atlas & Co., check size L chest measurements, and tell me how many L are in stock.",
+    "ground_truth": "The Sand Utility Overshirt Jacket by Atlas & Co. is recommended in size L for a body chest measurement of 102–108 cm, and there are 40 units in size L available.",
+    "expected_tools": [
+      {
+        "tool_name": "product_search_tool",
+        "input_parameters": {
+          "query": "Utility Overshirt Jacket Sand Atlas & Co."
+        }
+      },
+      {
+        "tool_name": "size_chart_tool",
+        "input_parameters": {
+          "product_id": 119,
+          "size_label": "L"
+        }
+      },
+      {
+        "tool_name": "check_stock_tool",
+        "input_parameters": {
+          "product_id": 119,
+          "size": "L"
+        }
+      }
+    ]
+  },
+  {
+    "query": "Build a women's office outfit with blouse, trousers and blazer under 1900 MAD, and check the size M stock for the black Double-Breasted Blazer (product_id 105).",
+    "ground_truth": "For a women's office outfit, I'd recommend the White Relaxed Poplin Blouse, Camel Pleated Wide-Leg Trousers, and Black Double-Breasted Blazer, totaling 1,857 MAD. The blazer is available in size M, with 28 units in stock.",
+    "expected_tools": [
+      {
+        "tool_name": "build_outfit_tool",
+        "input_parameters": {
+          "budget_mad": 1900,
+          "required_categories": [
+            "Women / Blouses",
+            "Women / Trousers",
+            "Women / Blazers"
+          ]
+        }
+      },
+      {
+        "tool_name": "check_stock_tool",
+        "input_parameters": {
+          "product_id": 105,
+          "size": "M"
+        }
+      }
+    ]
+  },
+  {
+    "query": "Hi! What kinds of things can you help me shop for?",
+    "ground_truth": "I can help you find products, check prices and stock availability, review size charts, put together outfits for your style and budget, and answer questions using the store's available information.",
+    "expected_tools": []
+  }
+]

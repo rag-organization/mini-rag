@@ -4,3 +4,4 @@ from .ProcessController import ProcessController
 from .NLPControllers import NLPController
 from .BaseController import BaseController
 from .CatalogController import CatalogController
+from .RetrievalEvalController import ProductRetrievalEvalController, RetrievalEvalController   

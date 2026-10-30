@@ -2,9 +2,8 @@ from langgraph.graph import StateGraph, END, START
 from langgraph.prebuilt import ToolNode, tools_condition
 from .nodes import create_agent_node
 from .state import StylistState
-from langgraph.checkpoint.memory import MemorySaver
 
-def create_stylist_graph(llm, tools):
+def create_stylist_graph(llm, tools, checkpointer):
     ## create graph
     graph = StateGraph(StylistState)
 
@@ -13,8 +12,8 @@ def create_stylist_graph(llm, tools):
     agent_node = create_agent_node(llm=llm, tools=tools)
     tools_node = ToolNode(tools=tools, handle_tool_errors=False)
 
-    print("agent_node: ",agent_node)
-    print("tool_node: ", tools_node)
+    # print("agent_node: ",agent_node)
+    # print("tool_node: ", tools_node)
     # add nodes & edges
 
     graph.add_node("assistant", agent_node)
@@ -29,10 +28,8 @@ def create_stylist_graph(llm, tools):
             "__end__":END
         }
     )
-    print("graph created")
+    print("graph created successfully")
     graph.add_edge("tools", "assistant")
-
-    print(graph)
     # compile
 
-    return graph.compile(checkpointer=MemorySaver())
+    return graph.compile(checkpointer=checkpointer)
